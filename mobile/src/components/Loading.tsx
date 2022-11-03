@@ -1,9 +1,12 @@
-import { Center , Spinner } from "native-base";
+import { Center, Spinner } from "native-base";
+import { useAuth } from "../hooks/useAuth";
 
-export function Loading(){
+
+
+export function Loading() {
     return (
         <Center flex={1} bg="gray.900">
-            <Spinner color= "yellow.500"/>
+            <Spinner color="yellow.500" />
         </Center>
     )
 }

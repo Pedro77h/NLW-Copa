@@ -7,6 +7,7 @@ import { useFonts, Roboto_400Regular, Roboto_500Medium, Roboto_700Bold } from '@
 import { SingIn } from './src/screens/SingIn'
 import { Loading } from './src/components/Loading';
 import { THEME } from './src/styles/theme';
+import { AuthContext, AuthContextProvider } from './src/context/AuthContext';
 
 export default function App() {
 
@@ -14,12 +15,14 @@ export default function App() {
 
   return (
     <NativeBaseProvider theme={THEME}>
+      <AuthContextProvider>
       <StatusBar
       barStyle='light-content'
       backgroundColor="transparent"
       translucent
       />
       {fontsLoaded ? <SingIn /> : <Loading />}
+      </AuthContextProvider>
     </NativeBaseProvider>
   );
 }
