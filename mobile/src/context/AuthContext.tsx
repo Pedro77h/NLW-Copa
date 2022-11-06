@@ -1,8 +1,9 @@
-import { createContext, ReactNode, useState , useEffect } from "react";
+import { createContext, ReactNode, useState, useEffect } from "react";
 import * as Google from 'expo-auth-session/providers/google'
 import * as AuthSession from 'expo-auth-session'
 import * as webBrowser from 'expo-web-browser'
 import secret from '../../config/secret.json'
+import { api } from '../services/api'
 
 webBrowser.maybeCompleteAuthSession()
 
@@ -26,8 +27,8 @@ export const AuthContext = createContext({} as AuthContextDataProps)
 
 
 export function AuthContextProvider({ children }: AuthProviderProps) {
-    
-    const [user , setUser] = useState<UseProps>({} as UseProps)
+
+    const [user, setUser] = useState<UseProps>({} as UseProps)
     const [isUserLoading, setIsUserLoading] = useState(false)
 
 
@@ -46,7 +47,7 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
         } catch (err) {
             console.log(err);
             throw err
-            
+
 
 
         } finally {
@@ -54,16 +55,34 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
         }
     }
 
-    async function signInWithGoogle(acess_token:string) {
-        console.log("TOKEN DE AUTENTICAÇÃO :" , acess_token);
-        
+    async function signInWithGoogle(acess_token: string) {
+        try {
+            setIsUserLoading(true)
+
+            const token = await api.post("/users", { acess_token })
+
+            api.defaults.headers.common['Authorization'] = `Bearer ${token.data.token}`
+
+            const userInfoResponse = await api.get('/me')
+
+            setUser(userInfoResponse.data.user)
+
+        } catch (err) {
+
+            console.log(err)
+            throw err
+
+        } finally {
+            setIsUserLoading(false)
+        }
+
     }
 
-   const token = useEffect(() =>{
-        if(response?.type === 'success' && response.authentication?.accessToken){
+    const token = useEffect(() => {
+        if (response?.type === 'success' && response.authentication?.accessToken) {
             signInWithGoogle(response.authentication.accessToken)
         }
-    } , [response])
+    }, [response])
 
     return (
         <AuthContext.Provider value={{

@@ -29,7 +29,7 @@ export default function Home(props: HomeProps) {
       await navigator.clipboard.writeText(code)
 
       alert('Bolão criado com sucesso , o codigo foi copiado para a area de transferencia')
-      
+
       setPoolTitle('')
 
     } catch (err) {
@@ -96,7 +96,6 @@ export default function Home(props: HomeProps) {
               <span>Palpites enviados</span>
             </div>
           </div>
-
         </div>
       </main>
 
@@ -124,7 +123,7 @@ export const getStaticProps = async () => {
       userCount: userCountResponse.data.count,
       guessCount: guessCountResponse.data.count,
       poolsCount: poolsCountResponse.data.count
-    } , 
+    },
     revalidate: 50
   }
 
