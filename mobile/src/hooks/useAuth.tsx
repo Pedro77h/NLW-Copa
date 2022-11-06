@@ -7,3 +7,4 @@ export function useAuth(): AuthContextDataProps {
 
     return context
 }
+
